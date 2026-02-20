@@ -16,7 +16,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y autoconf automake libtool libncurses-dev python3 gperf bison flex
+        sudo apt-get install -y autoconf automake libtool libltdl-dev libncurses-dev python3 gperf bison flex pkg-config
 
     - name: Regenerate build files
       run: autoreconf -vfi
