@@ -1,0 +1,33 @@
+name: Chroma Plugin Test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.21
+
+    - name: Install Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y global exuberant-ctags
+
+    - name: Build Chroma Plugin
+      run: |
+        cd plugin-factory/chroma
+        ./build.sh
+
+    - name: Run Test
+      run: |
+        chmod +x plugin-factory/chroma/test_ci.sh
+        ./plugin-factory/chroma/test_ci.sh
