@@ -23,19 +23,23 @@ cp -r "$examples_dir/"* "$work_dir"
 
 # Create minimal gtags.conf
 cat <<EOF > "$work_dir/gtags.conf"
-default:
+default:\\
 	:tc=chroma:
 
-chroma:
+chroma:\\
 	:tc=chroma-parser:
 
-chroma-parser:
-	:chromalib=$chroma_so:
-	:ctagscom=ctags:
-	:langmap=cpp\:.cpp.h:
-	:langmap=python\:.py:
-	:langmap=javascript\:.js:
-	:langmap=tcl\:.tcl:
+chroma-parser:\\
+	:chromalib=$chroma_so:\\
+	:ctagscom=ctags:\\
+	:langmap=C++\:.cpp.h:\\
+	:langmap=Python\:.py:\\
+	:langmap=JavaScript\:.js:\\
+	:langmap=Tcl\:.tcl:\\
+	:gtags_parser=C++\:$chroma_so:\\
+	:gtags_parser=Python\:$chroma_so:\\
+	:gtags_parser=JavaScript\:$chroma_so:\\
+	:gtags_parser=Tcl\:$chroma_so:
 EOF
 
 export GTAGSCONF="$work_dir/gtags.conf"
