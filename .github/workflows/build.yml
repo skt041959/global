@@ -16,7 +16,12 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y autoconf automake libtool libltdl-dev libncurses-dev python3 gperf bison flex pkg-config
+        sudo apt-get install -y autoconf automake libtool libltdl-dev libncurses-dev python3 gperf bison flex pkg-config universal-ctags
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.21'
 
     - name: Regenerate build files
       run: autoreconf -vfi
@@ -29,3 +34,16 @@ jobs:
 
     - name: Test
       run: make check
+
+    - name: Build Chroma Plugin
+      run: |
+        cd plugin-factory/chroma
+        ./build.sh
+
+    - name: Test Chroma Plugin
+      run: |
+        mkdir -p dist
+        make install DESTDIR=$(pwd)/dist
+        export PATH=$(pwd)/dist/usr/local/bin:$PATH
+        export LD_LIBRARY_PATH=$(pwd)/dist/usr/local/lib:$LD_LIBRARY_PATH
+        ./plugin-factory/chroma/test_chroma.sh
