@@ -39,7 +39,7 @@
 #define ARGS_GFIND	3
 #define ARGS_BOTH	4
 
-int type;
+int args_type;
 const char **argslist;
 FILE *ip;
 GFIND *gp;
@@ -52,7 +52,7 @@ GFIND *gp;
 void
 args_open(const char **args)
 {
-	type = ARGS_ARGS;
+	args_type = ARGS_ARGS;
 	argslist = args;
 }
 /**
@@ -64,7 +64,7 @@ args_open(const char **args)
 void
 args_open_filelist(const char *filename)
 {
-	type = ARGS_FILELIST;
+	args_type = ARGS_FILELIST;
 	if (!strcmp(filename, "-")) {
 		ip = stdin;
 	} else {
@@ -83,7 +83,7 @@ args_open_filelist(const char *filename)
 void
 args_open_both(const char **args, const char *filename)
 {
-	type = ARGS_BOTH;
+	args_type = ARGS_BOTH;
 	argslist = args;
 	if (!strcmp(filename, "-")) {
 		ip = stdin;
@@ -101,13 +101,13 @@ args_open_both(const char **args, const char *filename)
 void
 args_open_gfind(GFIND *agp)
 {
-	type = ARGS_GFIND;
+	args_type = ARGS_GFIND;
 	gp = agp;
 }
 void
 args_open_nop(void)
 {
-	type = ARGS_NOP;
+	args_type = ARGS_NOP;
 }
 /**
  * args_read: read path From args.
@@ -121,7 +121,7 @@ args_read(void)
 	STATIC_STRBUF(sb);
 
 	strbuf_clear(sb);
-	switch (type) {
+	switch (args_type) {
 	case ARGS_NOP:
 		p = NULL;
 		break;
@@ -151,7 +151,7 @@ args_read(void)
 void
 args_close(void)
 {
-	switch (type) {
+	switch (args_type) {
 	case ARGS_NOP:
 	case ARGS_ARGS:
 		break;

@@ -1,0 +1,31 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y autoconf automake libtool libltdl-dev libncurses-dev python3 gperf bison flex pkg-config
+
+    - name: Regenerate build files
+      run: autoreconf -vfi
+
+    - name: Configure
+      run: ./configure
+
+    - name: Build
+      run: make
+
+    - name: Test
+      run: make check
